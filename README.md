@@ -29,6 +29,8 @@ Don't see a demonstration for your desired use case, VS Code API, etc.? Open an 
 
 A set of sample extensions that demonstrate how to use various web frameworks to render the webview UI.
 
+Dont't see a sample for your desired framework? Read our guide on [how to create framework-based webview extensions](./frameworks/framework-based-webviews.md).
+
 | Sample extension                                              | Description                                                           |
 | --------------------------------------------------------------| --------------------------------------------------------------------- |
 | [hello-world-angular](./frameworks/hello-world-angular)       | A basic hello-world starter extension using Angular.                  |
