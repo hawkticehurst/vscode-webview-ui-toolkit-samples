@@ -1,5 +1,6 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from "vscode";
 import { getUri } from "../utilities/getUri";
+import { getNonce } from "../utilities/getNonce";
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -30,7 +31,7 @@ export class HelloWorldPanel {
     this._panel.onDidDispose(this.dispose, null, this._disposables);
 
     // Set the HTML content for the webview panel
-    this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
+    this._panel.webview.html = this._getWebviewHtml(this._panel.webview, extensionUri);
 
     // Set an event listener to listen for messages passed from the webview context
     this._setWebviewMessageListener(this._panel.webview);
@@ -57,8 +58,10 @@ export class HelloWorldPanel {
         ViewColumn.One,
         // Extra panel configurations
         {
-          // Enable JavaScript in the webview
+          // Enable javascript in the webview
           enableScripts: true,
+          // Restrict the webview to only load resources from the `dist` directory
+          localResourceRoots: [Uri.joinPath(extensionUri, "dist")],
         }
       );
 
@@ -87,23 +90,19 @@ export class HelloWorldPanel {
   /**
    * Defines and returns the HTML that should be rendered within the webview panel.
    *
-   * @remarks This is also the place where references to CSS and JavaScript files/packages
-   * (such as the Webview UI Toolkit) are created and inserted into the webview HTML.
+   * @remarks This is also the place where references to CSS and JavaScript files
+   * are created and inserted into the webview HTML.
    *
    * @param webview A reference to the extension webview
    * @param extensionUri The URI of the directory containing the extension
    * @returns A template string literal containing the HTML that should be
    * rendered within the webview panel
    */
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
-    const toolkitUri = getUri(webview, extensionUri, [
-      "node_modules",
-      "@vscode",
-      "webview-ui-toolkit",
-      "dist",
-      "toolkit.js",
-    ]);
-    const mainUri = getUri(webview, extensionUri, ["webview-ui", "main.js"]);
+  private _getWebviewHtml(webview: Webview, extensionUri: Uri) {
+    const webviewUri = getUri(webview, extensionUri, ["dist", "webview.js"]);
+
+    // Use a nonce to only allow specific scripts to be run
+    const nonce = getNonce();
 
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
     return /*html*/ `
@@ -112,8 +111,14 @@ export class HelloWorldPanel {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <script type="module" src="${toolkitUri}"></script>
-          <script type="module" src="${mainUri}"></script>
+
+          <!--
+            Use a content security policy to only allow loading styles from the extension directory, loading 
+            from images from HTTPS or from the extension directory, and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+
+          <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
           <title>Hello World</title>
         </head>
         <body>
@@ -141,7 +146,7 @@ export class HelloWorldPanel {
           case "hello":
             // Code that should run in response to the hello message command
             window.showInformationMessage(text);
-            return;
+            break;
           // Add more switch case statements here as more webview message commands
           // are created within the webview context (i.e. inside media/main.js)
         }
