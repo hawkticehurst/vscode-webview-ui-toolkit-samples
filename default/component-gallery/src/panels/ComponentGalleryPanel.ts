@@ -42,7 +42,7 @@ export class ComponentGalleryPanel {
     this._panel.onDidDispose(this.dispose, null, this._disposables);
 
     // Set the HTML content for the webview panel
-    this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
+    this._panel.webview.html = this._getWebviewHtml(this._panel.webview, extensionUri);
   }
 
   /**
@@ -104,7 +104,7 @@ export class ComponentGalleryPanel {
    * @returns A template string literal containing the HTML that should be
    * rendered within the webview panel
    */
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+  private _getWebviewHtml(webview: Webview, extensionUri: Uri) {
     const toolkitUri = getUri(webview, extensionUri, [
       "node_modules",
       "@vscode",

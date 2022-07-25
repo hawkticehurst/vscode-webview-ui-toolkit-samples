@@ -25,14 +25,14 @@ export class WeatherViewProvider implements WebviewViewProvider {
     };
 
     // Set the HTML content that will fill the webview view
-    webviewView.webview.html = this._getWebviewContent(webviewView.webview, this._extensionUri);
+    webviewView.webview.html = this._getWebviewHtml(webviewView.webview, this._extensionUri);
 
     // Sets up an event listener to listen for messages passed from the webview view context
     // and executes code based on the message that is recieved
     this._setWebviewMessageListener(webviewView);
   }
 
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+  private _getWebviewHtml(webview: Webview, extensionUri: Uri) {
     const toolkitUri = getUri(webview, extensionUri, [
       "node_modules",
       "@vscode",
