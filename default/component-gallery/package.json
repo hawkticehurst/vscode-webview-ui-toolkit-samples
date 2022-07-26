@@ -4,7 +4,7 @@
   "description": "A sample extension to show off all components in the Webview UI Toolkit for Visual Studio Code.",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.46.0"
+    "vscode": "^1.69.0"
   },
   "repository": {
     "type": "git",
