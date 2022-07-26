@@ -119,7 +119,7 @@ export class HelloWorldPanel {
 
           <!--
             Use a content security policy to only allow loading styles from the extension directory, loading 
-            from images from HTTPS or from the extension directory, and only allow scripts that have a specific nonce.
+            images from HTTPS or from the extension directory, and only allow scripts that have a specific nonce.
           -->
           <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
 
