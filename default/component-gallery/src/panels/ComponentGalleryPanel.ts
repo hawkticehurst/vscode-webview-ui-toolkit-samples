@@ -131,13 +131,13 @@ export class ComponentGalleryPanel {
       <!DOCTYPE html>
       <html lang="en">
         <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script type="module" src="${toolkitUri}"></script>
-            <script type="module" src="${mainUri}"></script>
-            <link rel="stylesheet" href="${styleUri}">
-            <link rel="stylesheet" href="${codiconsUri}">
-            <title>Component Gallery</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script type="module" src="${toolkitUri}"></script>
+          <script type="module" src="${mainUri}"></script>
+          <link rel="stylesheet" href="${styleUri}">
+          <link rel="stylesheet" href="${codiconsUri}">
+          <title>Component Gallery</title>
         </head>
         <body>
           <h1>Webview UI Toolkit Component Gallery</h1>
